@@ -23,9 +23,11 @@ io.on("connection", (socket) => {
     if (Object.keys(players).length === 2) {
       turn = "X";
       io.emit("start-game", { turn, board });
+      console.log("start-game", { turn, board });
     }
   } else {
     socket.emit("full", "Room is full");
+    console.log("full", "Room is full");
     return;
   }
 
@@ -36,6 +38,7 @@ io.on("connection", (socket) => {
       board[index] = symbol;
       turn = turn === "X" ? "O" : "X";
       io.emit("update-board", { board, turn });
+      console.log("update-board", { board, turn });
       checkWinner();
     }
   });
@@ -57,6 +60,7 @@ io.on("connection", (socket) => {
     for (let [a,b,c] of winPatterns) {
       if (board[a] && board[a] === board[b] && board[b] === board[c]) {
         io.emit("game-over", { winner: board[a] });
+        console.log("game-over", { winner: board[a] });
         board = Array(9).fill(null);
         return;
       }
